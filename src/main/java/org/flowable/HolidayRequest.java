@@ -18,11 +18,12 @@ public class HolidayRequest {
 
     public static void main(String[] args) {
         ProcessEngineConfiguration cfg = new StandaloneProcessEngineConfiguration()
-                .setJdbcUrl("jdbc:h2:mem:flowable;DB_CLOSE_DELAY=-1")
-                .setJdbcUsername("sa")
-                .setJdbcPassword("")
-                .setJdbcDriver("org.h2.Driver")
+                .setJdbcUrl("jdbc:mysql://localhost:3306/holiday_db?autoReconnect=true")
+                .setJdbcUsername("root")
+                .setJdbcPassword("Anupam@123")
+                .setJdbcDriver("com.mysql.cj.jdbc.Driver")
                 .setDatabaseSchemaUpdate(ProcessEngineConfiguration.DB_SCHEMA_UPDATE_TRUE);
+
 
         ProcessEngine processEngine = cfg.buildProcessEngine();
 
@@ -85,6 +86,8 @@ public class HolidayRequest {
                         .finished()
                         .orderByHistoricActivityInstanceEndTime().asc()
                         .list();
+
+        runtimeService.getVariable(processInstance.getId(), "employee");
 
         for (HistoricActivityInstance activity : activities) {
             System.out.println(activity.getActivityId() + " took "
